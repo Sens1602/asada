@@ -32,7 +32,7 @@
 #pragma config WRT0=OFF,WRT1=OFF,WRT2=OFF,WRT3=OFF,WRTB=OFF,WRTC=OFF,WRTD=OFF
 #pragma config EBTR0=OFF,EBTR1=OFF,EBTR2=OFF,EBTR3=OFF,EBTRB=OFF
 
-char AdcRes[9] = {0, 1, 2, 3, 4, 5, 6, 7, '\0'};
+char AdcRes[11] = {'t', 'o', 'p', 6, 6, 6, 6, 6, 6, 6, 6};
 char text[] = "wasedaaaaa!!!!!!!";
 void main(void)
 {
@@ -51,59 +51,54 @@ void main(void)
                 USART_CONT_RX & USART_BRGH_LOW, 12);
     while(1)
     {
-        if(DataRdyUSART())
-        {
-            cmnd=ReadUSART();
-            if(cmnd == '0')
-            {
-                flag = 0;
-            }
-            if(cmnd == '1')
-            {
-                flag = 1;
-            }
-            if(cmnd == '2')
-            {
-                flag = 2;
-            }
-            if(cmnd == '3')
-            {
-                flag = 3;
-            }
-            if(cmnd =='4')
-            {
-                flag =4;
-              
-            }
-        }
-    LATBbits.LATB5 = 0;
-    LATBbits.LATB5 = 1;
-    Delay10KTCYx(10);
+    LATBbits.LATB5 ^= 1;
+    Delay10KTCYx(20);
     
     SetChanADC(ADC_CH8);
     ConvertADC();
     while(BusyADC()); 
-    AdcRes[0] =  ADRESH+1;
-    AdcRes[1] = ADRESL+1;   
+    AdcRes[3] =  ADRESH;
+    AdcRes[4] = ADRESL;   
     
     SetChanADC(ADC_CH9);
     ConvertADC();
     while(BusyADC()); 
-    AdcRes[2] =  ADRESH+1;;
-    AdcRes[3] = ADRESL+1;
+    AdcRes[5] =  ADRESH;
+    AdcRes[6] = ADRESL;
     
     SetChanADC(ADC_CH10);
     ConvertADC();
     while(BusyADC()); 
-    AdcRes[4] =  ADRESH+1;
-    AdcRes[5] = ADRESL+1;
+    AdcRes[7] =  ADRESH;
+    AdcRes[8] = ADRESL;
     
     SetChanADC(ADC_CH11);
     ConvertADC();
     while(BusyADC()); 
-    AdcRes[6] =  ADRESH+1;
-    AdcRes[7] = ADRESL+1;
+    AdcRes[9] =  ADRESH;
+    AdcRes[10] = ADRESL;
     
-    putsUSART(AdcRes);
+    WriteUSART(AdcRes[0]);
+    while(BusyUSART());
+    WriteUSART(AdcRes[1]);
+    while(BusyUSART());
+    WriteUSART(AdcRes[2]);
+    while(BusyUSART());
+    WriteUSART(AdcRes[3]);
+    while(BusyUSART());
+    WriteUSART(AdcRes[4]);
+    while(BusyUSART());
+    WriteUSART(AdcRes[5]);
+    while(BusyUSART());
+    WriteUSART(AdcRes[6]);
+    while(BusyUSART());
+    WriteUSART(AdcRes[7]);
+    while(BusyUSART());
+    WriteUSART(AdcRes[8]);
+    while(BusyUSART());
+    WriteUSART(AdcRes[9]);
+    while(BusyUSART());
+    WriteUSART(AdcRes[10]);
+    while(BusyUSART());
     }
     }
